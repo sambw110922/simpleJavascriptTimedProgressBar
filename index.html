@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+
+	<head>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>A Simple Javascript Timed Progress Bar</title>
+		
+		<style>
+		
+			html, body {
+				margin: 0; padding: 0;
+				font-family: "Verdana", sans-serif;
+				font-size: 18px;
+			}
+			
+			nav {
+				margin: 0;
+				padding: 2%;
+				text-align: center;
+				background-color: #449deb;
+			}
+			
+			#mainLink {
+				color: black;
+			}
+			
+			#mainLink:hover {
+				font-style: italic;
+			}
+			
+			main {
+				padding: 2%;
+			}
+			
+			#barContainer {
+				display: flex;
+				flex-direction: column;
+			}
+			
+			#pgrMain {
+				width: 400px;
+				border-radius: 25px;
+			}
+			
+			footer {
+				margin-top: 20%;
+				padding: 2%;
+				text-align: center;
+				color: white;
+				background-color: black;
+			}
+			
+		</style>
+		
+	</head>
+	
+	<body>
+	
+		<nav>
+		
+			<a id="mainLink" href="./index.html">
+				<h1>A Simple Javascript Timed Progress Bar</h1>
+			</a>
+			
+		</nav>
+		
+		<main>
+			
+			<h2>Click Button to start the progress bar!</h2>
+			
+			<div id="barContainer">
+			
+				<label for="pgrMain">
+					Progress status:
+				</label>
+				
+				<progress id="pgrMain" max="100" value="0">
+				</progress>
+				
+				<p id="lblMain">
+					[status will go here]
+				</p>
+			
+				
+			</div>
+			
+			<button id="btnStart">
+				Start
+			</button>
+			
+		</main>
+		
+		<footer>
+			<p>2023</p>
+		</footer>
+		
+		<script>
+
+	//	is the timer on?
+	var isTimerOn = false;
+	
+	//	the progress bar progress.
+	var pgrbrProgress = 0;
+	
+	//	interval
+	var pgrTimer = null;
+	
+	//	updates the progress bar label
+	function UpdateProgressLabel(){
+		
+		if(pgrbrProgress == 100){
+			document.getElementById("lblMain").innerHTML = "Done!";
+		} else {
+			document.getElementById("lblMain").innerHTML = pgrbrProgress + "%";
+		}
+		
+	}
+	
+	//	the main init
+	function init(){
+		
+		//	start the timer
+		document.getElementById("btnStart").addEventListener("click", function(){
+			
+			//	This function is passed to setInterval
+			var updateProgress = function(){
+				
+				if(isTimerOn == true){
+				
+					if(pgrbrProgress < 100){
+					
+						pgrbrProgress += 10;
+						
+						document.getElementById("pgrMain").value = pgrbrProgress;
+						
+						UpdateProgressLabel();
+					
+					} 
+					
+					if(pgrbrProgress == 100){
+					
+						isTimerOn = false;
+						UpdateProgressLabel();
+						
+						clearInterval(pgrTimer);
+						
+					}
+				
+				} 
+				
+			};
+		
+			//	Set the progress bar progress to 0.
+			pgrbrProgress = 0;
+			
+			//	update the progress bar value
+			document.getElementById("pgrMain").value = pgrbrProgress;
+			
+			//	update label 
+			UpdateProgressLabel()
+			
+			//	turn the timer on 
+			isTimerOn = true;
+			
+			//	every 1 seconds
+			pgrTimer = setInterval(updateProgress, 1000);
+			
+		});
+		
+	}
+	
+	init();
+
+		</script>
+	
+	</body>
+	
+</html>
